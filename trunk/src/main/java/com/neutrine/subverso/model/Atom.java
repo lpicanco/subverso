@@ -2,7 +2,7 @@ package com.neutrine.subverso.model;
 
 import java.util.ArrayList;
 
-public class Atom implements IMassive {
+public class Atom { //implements IMassive {
 	private Nucleus nucleus;
 	private ArrayList<Electron> electrons;
 	private Location location;
@@ -50,7 +50,7 @@ public class Atom implements IMassive {
 		return location;
 	}
 
-	@Override
+	//@Override
 	public void setLocation(Location location) {
 		this.location = location;
 	}
