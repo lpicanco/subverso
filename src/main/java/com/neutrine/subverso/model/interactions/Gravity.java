@@ -33,28 +33,29 @@ public class Gravity  {
 		
 		Location distanceAB = Location.distance(body1.getLocation(), body2.getLocation());
 		Location distanceBA = Location.distance(body2.getLocation(), body1.getLocation());
+		double norm = distanceAB.normalize();
 		
-		double g1X = calculateg(body1, distanceAB.getX()) * (distanceBA.getX() < 0 ? -1 : 1);
-		double g1Y = calculateg(body1, distanceAB.getY()) * (distanceBA.getY() < 0 ? -1 : 1);
-		double g1Z = calculateg(body1, distanceAB.getZ()) * (distanceBA.getZ() < 0 ? -1 : 1);
+		double g1X = calculateg(body1, norm) * (distanceBA.getX() < 0 ? -1 : 1);
+		double g1Y = calculateg(body1, norm) * (distanceBA.getY() < 0 ? -1 : 1);
+		double g1Z = calculateg(body1, norm) * (distanceBA.getZ() < 0 ? -1 : 1);
 
-		double g2X = calculateg(body2, distanceBA.getX()) * (distanceAB.getX() < 0 ? -1 : 1);
-		double g2Y = calculateg(body2, distanceBA.getY()) * (distanceAB.getY() < 0 ? -1 : 1);
-		double g2Z = calculateg(body2, distanceBA.getZ()) * (distanceAB.getZ() < 0 ? -1 : 1);
+		double g2X = calculateg(body2, norm) * (distanceAB.getX() < 0 ? -1 : 1);
+		double g2Y = calculateg(body2, norm) * (distanceAB.getY() < 0 ? -1 : 1);
+		double g2Z = calculateg(body2, norm) * (distanceAB.getZ() < 0 ? -1 : 1);
 		
-		double offSet1X = calculateDeslocation(g2X, duration);
-		double offSet1Y = calculateDeslocation(g2Y, duration);
-		double offSet1Z = calculateDeslocation(g2Z, duration);
+		double offSet1X = calculateVelocity(g2X, duration);
+		double offSet1Y = calculateVelocity(g2Y, duration);
+		double offSet1Z = calculateVelocity(g2Z, duration);
 		
-		double offSet2X = calculateDeslocation(g1X, duration);
-		double offSet2Y = calculateDeslocation(g1Y, duration);
-		double offSet2Z = calculateDeslocation(g1Z, duration);
+		double offSet2X = calculateVelocity(g1X, duration);
+		double offSet2Y = calculateVelocity(g1Y, duration);
+		double offSet2Z = calculateVelocity(g1Z, duration);
 
-		Location newLocation = new Location(offSet1X, offSet1Y, offSet1Z, duration);
-		body1.getLocation().add(newLocation);
+		Location newVelocity = new Location(offSet1X, offSet1Y, offSet1Z, 0);
+		body1.getVelocity().add(newVelocity);
 		
-		newLocation = new Location(offSet2X, offSet2Y, offSet2Z, duration);
-		body2.getLocation().add(newLocation);
+		newVelocity = new Location(offSet2X, offSet2Y, offSet2Z, 0);
+		body2.getVelocity().add(newVelocity);
 	}
 	
 	private double calculateg(IMassive body, double distance) {
@@ -62,7 +63,8 @@ public class Gravity  {
 		return g;
 	}
 
-	private double calculateDeslocation(double g, double duration) {
+	private double calculateVelocity(double g, double duration) {
+		// v = v0 + ((g + a) * t))
 		return g * duration;
 	}
 }
